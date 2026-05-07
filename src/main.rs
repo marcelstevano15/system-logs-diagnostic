@@ -307,7 +307,7 @@ fn build_ui(app: &Application) {
     let about_action = gio::SimpleAction::new("about", None);
     let window_weak = window.downgrade();
     
-    // BAGIAN ABOUT DIBAWAH INI SESUAI PERMINTAAN ANDA
+    
     about_action.connect_activate(move |_, _| {
         if let Some(window) = window_weak.upgrade() {
             let about = adw::AboutWindow::builder()
@@ -320,7 +320,7 @@ fn build_ui(app: &Application) {
                 .transient_for(&window)
                 .build();
 
-            // Mengatur ikon aplikasi agar selalu muncul
+            
             about.set_application_icon("help-about-symbolic");
             about.present();
         }
