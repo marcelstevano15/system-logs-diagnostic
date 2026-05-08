@@ -17,4 +17,4 @@
 * **UI**: [GTK4](https://www.gtk.org/) & [Libadwaita](https://gnome.pages.gitlab.gnome.org/libadwaita/)
 * **Serialization**: `serde_json` for structured journal parsing
 * **Concurrency**: `Rc<RefCell>` state management for fluid UI updates
-* **Data Source**: `systemd` journal via `journalctl` and `systemd-journal-reader`
+* **Data Source**: `systemd` journal via `journalctl` , `systemd-journal-reader` and `last -x`
