@@ -5,12 +5,10 @@ use gtk::{glib, gio};
 use adw::{Application, ApplicationWindow, HeaderBar, ToolbarView, StatusPage};
 use std::rc::Rc;
 use std::cell::RefCell;
-use std::path::Path;
 use chrono::Local;
 use serde_json::Value;
-use regex::Regex;
 
-const APP_ID: &str = "io.github.marcel.system-logs-diagnostic";
+const APP_ID: &str = "com.marcel.system-logs-diagnostic";
 
 #[derive(Clone)]
 struct LogEntry {
@@ -42,6 +40,20 @@ fn run_bash_json(cmd: &str) -> String {
     }
 }
 
+fn get_adaptive_color(severity_key: &str, is_dark: bool) -> &str {
+    match (severity_key, is_dark) {
+        ("panic", true) => "#FF7B7B",
+        ("panic", false) => "#A10000",
+        ("error", true) => "#F66151",
+        ("error", false) => "#C01C28",
+        ("warning", true) => "#FFBE6F",
+        ("warning", false) => "#E66100",
+        ("normal", true) => "#8FF0A4",
+        ("normal", false) => "#26A269",
+        _ => "#000000",
+    }
+}
+
 fn diagnose_system(
     raw_input: &str,
     idx: i32,
@@ -49,56 +61,59 @@ fn diagnose_system(
     let current_time = Local::now().format("%H:%M:%S").to_string();
 
     if idx == 2 {
-        let has_crash = raw_input.contains("crash") || raw_input.contains("gone");
-
-        return if has_crash {
-            (
-                "POWER ANOMALY".to_string(),
-                format!("Detected hardware-level shutdown at {}.", current_time),
-                "destructive",
-                "system-shutdown-symbolic",
-            )
-        } else {
-            (
-                "POWER SYSTEM STABLE".to_string(),
-                format!("Clean shutdown sequences verified at {}.", current_time),
-                "success",
-                "system-shutdown-symbolic",
-            )
-        };
+        return (
+            "POWER ARCHITECTURE AUDIT".to_string(),
+            format!("Executive summary of system power cycles at {}.", current_time),
+            "success",
+            "emblem-ok-symbolic",
+        );
     }
 
+    let mut panic_count = 0;
     let mut error_count = 0;
-    let mut critical_found = false;
+    let mut warning_count = 0;
 
     for line in raw_input.lines() {
         if let Ok(v) = serde_json::from_str::<Value>(line) {
             if let Some(prio_str) = v["PRIORITY"].as_str() {
                 let prio = prio_str.parse::<i32>().unwrap_or(6);
-                if prio <= 2 { critical_found = true; }
-                if prio <= 3 { error_count += 1; }
+                match prio {
+                    0..=2 => panic_count += 1,
+                    3 => error_count += 1,
+                    4 => warning_count += 1,
+                    _ => (),
+                }
             }
         }
     }
 
-    if critical_found {
+    if panic_count > 0 || (idx == 3 && error_count > 0) {
         (
-            "CRITICAL FAILURE".to_string(),
-            format!("Fatal exceptions detected at {}.", current_time),
+            format!("CRITICAL SYSTEM FAILURE: {} EVENTS", panic_count + error_count),
+            format!("Urgent: Critical infrastructure exceptions identified at {}. Logged events are available for inspection.", current_time),
             "destructive",
             "software-update-urgent-symbolic",
         )
     } else if error_count > 0 {
+          (
+            format!("SERVICES ERROR: {} EVENTS", error_count),
+            format!("One of more services failed while hardware systems remain operational, reported at {}.", current_time),
+            "destructive",
+            "dialog-error-symbolic",
+        )
+
+    } else if warning_count > 0 {
         (
-            format!("{} ERRORS DETECTED", error_count),
-            format!("System reported service failures at {}.", current_time),
+            format!("SYSTEM OPERATIONAL: {} MINOR LOG EVENTS", warning_count),
+            format!("The system architecture is stable. {} non-critical background events were recorded at {}.", warning_count, current_time),
             "warning",
             "dialog-warning-symbolic",
         )
+
     } else {
         (
-            "SYSTEM INTEGRITY VERIFIED".to_string(),
-            format!("No anomalies found. Scan finished at {}.", current_time),
+            "SYSTEM INTEGRITY: FULLY VERIFIED".to_string(),
+            format!("Zero anomalies. All parameters nominal at {}.", current_time),
             "success",
             "emblem-ok-symbolic",
         )
@@ -133,11 +148,12 @@ fn parse_logs_smart(raw_json: &str) -> Vec<LogEntry> {
 fn build_ui(app: &Application) {
     let window = ApplicationWindow::builder()
         .application(app)
-        .title("System Diagnostic Pro")
+        .title("System Logs Diagnostic")
         .default_width(1050)
         .default_height(800)
         .build();
 
+    let style_manager = adw::StyleManager::default();
     let current_logs = Rc::new(RefCell::new(Vec::<LogEntry>::new()));
     let buffer = gtk::TextBuffer::new(None);
     let split_view = adw::NavigationSplitView::new();
@@ -154,7 +170,6 @@ fn build_ui(app: &Application) {
     list_box.set_margin_bottom(12);
 
     let menu = ["Active Session", "Last Shutdown", "Power Audit", "Critical Errors", "Kernel Logs"];
-
     for item in menu {
         list_box.append(&adw::ActionRow::builder().title(item).activatable(true).build());
     }
@@ -201,24 +216,28 @@ fn build_ui(app: &Application) {
 
     let render_logs = {
         let buf = buffer.clone();
+        let sm = style_manager.clone();
         move |logs: &[LogEntry]| {
             buf.set_text("");
+            let is_dark = sm.is_dark();
             for e in logs {
-                let tag_name = match e.severity {
+                let severity_key = match e.severity {
                     3 => "panic",
-                    2 => "err",
-                    1 => "warn",
+                    2 => "error",
+                    1 => "warning",
                     _ => "normal",
                 };
 
+                let color = get_adaptive_color(severity_key, is_dark);
+                let tag_id = format!("{}_{}", severity_key, if is_dark { "d" } else { "l" });
+
                 let mut iter = buf.end_iter();
-                let tag = buf.tag_table().lookup(tag_name).unwrap_or_else(|| {
-                    let t = match tag_name {
-                        "panic" => gtk::TextTag::builder().name("panic").foreground("#e01b24").weight(800).build(),
-                        "err" => gtk::TextTag::builder().name("err").foreground("#ff5d5a").build(),
-                        "warn" => gtk::TextTag::builder().name("warn").foreground("#f5c211").build(),
-                        _ => gtk::TextTag::builder().name("normal").build(),
-                    };
+                let tag = buf.tag_table().lookup(&tag_id).unwrap_or_else(|| {
+                    let t = gtk::TextTag::builder()
+                        .name(&tag_id)
+                        .foreground(color)
+                        .weight(if severity_key == "panic" { 800 } else { 400 })
+                        .build();
                     buf.tag_table().add(&t);
                     t
                 });
@@ -236,35 +255,59 @@ fn build_ui(app: &Application) {
         let buf = buffer.clone();
 
         move |idx: i32| {
+            status.remove_css_class("error");
+            status.remove_css_class("warning");
+            status.remove_css_class("success");
+
             if idx == 2 {
                 let raw_power = Command::new("sh")
                     .arg("-c")
-                    .arg("last -x | head -n 500")
+                    .arg("last -x | grep -E 'reboot|shutdown'")
                     .output();
                 
                 if let Ok(out) = raw_power {
                     let raw_content = String::from_utf8_lossy(&out.stdout).to_string();
-                    let (t, d, _, icon) = diagnose_system(&raw_content, idx);
-                    
-                    let re = Regex::new(r"^(?P<event>reboot|shutdown)\s+\S+\s+(?P<kernel>\S+)\s+(?P<date>.+)$").unwrap();
-                    let mut filtered_output = String::new();
+                    let lines: Vec<&str> = raw_content.lines().collect();
+                    let mut unclean_count = 0;
 
-                    for line in raw_content.lines() {
-                        if let Some(caps) = re.captures(line) {
-                            filtered_output.push_str(&format!(
-                                "{:<10} {:<15} {}\n",
-                                &caps["event"],
-                                &caps["kernel"],
-                                &caps["date"]
-                            ));
+                    buf.set_text("");
+                    let tag_panic = buf.tag_table().lookup("panic_d").unwrap_or_else(|| {
+                        let t = gtk::TextTag::builder().name("panic_d").foreground("#FF7B7B").weight(800).build();
+                        buf.tag_table().add(&t);
+                        t
+                    });
+
+                    for i in 1..lines.len() {
+                        let current = lines[i];
+                        let mut is_unclean = false;
+                        if current.starts_with("reboot") {
+                            if let Some(prev) = lines.get(i + 1) {
+                                if !prev.starts_with("shutdown") {
+                                    unclean_count += 1;
+                                    is_unclean = true;
+                                }
+                            }
+                        }
+
+                        let mut iter = buf.end_iter();
+                        if is_unclean || current.contains("crash") {
+                            buf.insert_with_tags(&mut iter, &format!("{}\n", current), &[&tag_panic]);
+                        } else {
+                            buf.insert(&mut iter, &format!("{}\n", current));
                         }
                     }
 
-                    status.set_title(&t);
-                    status.set_description(Some(&d));
-                    status.set_icon_name(Some(icon));
-                    status.remove_css_class("error");
-                    buf.set_text(&filtered_output);
+                    if unclean_count > 0 {
+                        status.set_title(&format!("UNCLEAN SHUTDOWN DETECTED ({})", unclean_count));
+                        status.set_description(Some(&format!("Power Audit Detected {} Unexpected Shutdown Event.", unclean_count)));
+                        status.set_icon_name(Some("dialog-error-symbolic"));
+                        status.add_css_class("error");
+                    } else {
+                        status.set_title("SYSTEM OPERATIONAL INTEGRITY: VERIFIED");
+                        status.set_description(Some("All historical power cycles conform to standard shutdown protocols."));
+                        status.set_icon_name(Some("emblem-ok-symbolic"));
+                        status.add_css_class("success");
+                    }
                     logs_store.borrow_mut().clear();
                 }
                 return;
@@ -283,7 +326,12 @@ fn build_ui(app: &Application) {
             status.set_description(Some(&d));
             status.set_icon_name(Some(icon));
 
-            if app_class == "destructive" { status.add_css_class("error"); } else { status.remove_css_class("error"); }
+            match app_class {
+                "destructive" => status.add_css_class("error"),
+                "warning" => status.add_css_class("warning"),
+                "success" => status.add_css_class("success"),
+                _ => (),
+            }
 
             let logs = parse_logs_smart(&raw_json);
             *logs_store.borrow_mut() = logs.clone();
@@ -294,6 +342,18 @@ fn build_ui(app: &Application) {
     let u_rc = Rc::new(update_view);
     let u = u_rc.clone();
     list_box.connect_row_activated(move |_, row| { u(row.index()); });
+
+    style_manager.connect_dark_notify({ //
+    let logs_store = current_logs.clone();
+    let render = render_logs_rc.clone();
+    move |_| {
+        let logs = logs_store.borrow();
+        if !logs.is_empty() {
+            render(&logs);
+        }
+    }
+});
+
 
     let u_logs = current_logs.clone();
     let render_search = render_logs_rc.clone();
@@ -306,22 +366,19 @@ fn build_ui(app: &Application) {
 
     let about_action = gio::SimpleAction::new("about", None);
     let window_weak = window.downgrade();
-    
-    // BAGIAN ABOUT DIBAWAH INI SESUAI PERMINTAAN ANDA
     about_action.connect_activate(move |_, _| {
         if let Some(window) = window_weak.upgrade() {
-            let about = adw::AboutWindow::builder()
-                .application_name("System Diagnostic")
-                .version("0.5.0-beta-2")
+             let about = adw::AboutWindow::builder()
+                .application_name("System Logs Diagnostic")
+                .application_icon(APP_ID)
+                .version("1.0.0")
                 .developer_name("Marcel Stevano")
                 .license_type(gtk::License::Gpl30)
-                .website("https://github.com/marcelstevano15/linux-native-desktop-apps")
-                .issue_url("https://github.com/marcelstevano15/linux-native-desktop-apps/issues")
+                .website("https://github.com/marcelstevano15/system-logs-diagnostic")
+                .issue_url("https://github.com/marcelstevano15/system-logs-diagnostic/issues")
                 .transient_for(&window)
                 .build();
-
-            // Mengatur ikon aplikasi agar selalu muncul
-            about.set_application_icon("help-about-symbolic");
+            
             about.present();
         }
     });
@@ -343,7 +400,7 @@ fn build_ui(app: &Application) {
             let mut logs = logs_store.borrow().clone();
             match mode {
                 "proc" => logs.sort_by(|a, b| a.process.to_lowercase().cmp(&b.process.to_lowercase())),
-                "new" => { /* Newest adalah urutan asli journalctl */ },
+                "new" => { },
                 "old" => logs.reverse(),
                 "low" => logs.sort_by(|a, b| a.severity.cmp(&b.severity)),
                 "high" => logs.sort_by(|a, b| b.severity.cmp(&a.severity)),

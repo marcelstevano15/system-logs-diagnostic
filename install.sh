@@ -1,4 +1,4 @@
-APP_ID="io.github.marcel.system-logs-diagnostic"
+APP_ID="com.marcel.system-logs-diagnostic"
 BINARY_NAME="system-logs-diagnostic"
 BINARY_PATH="./target/release/$BINARY_NAME"
 INSTALL_DIR="/usr/local/bin"
@@ -15,9 +15,9 @@ fi
 sudo cp "$BINARY_PATH" "$INSTALL_DIR/$BINARY_NAME"
 sudo chmod +x "$INSTALL_DIR/$BINARY_NAME"
 
-if [ -f "icon.png" ]; then
+if [ -f "com.marcel.system-logs-diagnostic.png" ]; then
     sudo mkdir -p "$ICON_DEST_DIR"
-    sudo cp icon.png "$ICON_DEST_DIR/$BINARY_NAME.png"
+    sudo cp com.marcel.system-logs-diagnostic.png "$ICON_DEST_DIR/com.marcel.system-logs-diagnostic.png"
     sudo gtk-update-icon-cache /usr/share/icons/hicolor/
 fi
 
@@ -26,7 +26,7 @@ cat <<EOF | sudo tee "$DESKTOP_ENTRY_DIR/$APP_ID.desktop" > /dev/null
 Name=System Diagnostic
 Comment=Analyze system logs and kernel panics
 Exec=$INSTALL_DIR/$BINARY_NAME
-Icon=$BINARY_NAME
+Icon=com.marcel.system-logs-diagnostic.png
 Terminal=false
 Type=Application
 Categories=System;Monitor;GTK;
