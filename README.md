@@ -18,3 +18,27 @@
 * **Serialization**: `serde_json` for structured journal parsing
 * **Concurrency**: `Rc<RefCell>` state management for fluid UI updates
 * **Data Source**: `systemd` journal via `journalctl` , `systemd-journal-reader` and `last -x`
+
+# Dependencies
+
+## Ubuntu / Debian / Linux Mint
+
+```bash
+sudo apt install libgtk-4-dev libadwaita-1-dev pkg-config build-essential libsystemd-dev
+```
+
+---
+
+## Fedora
+
+```bash
+sudo dnf install gtk4-devel libadwaita-devel pkgconf-pkg-config gcc systemd-devel
+```
+
+---
+
+## Arch Linux
+
+```bash
+sudo pacman -S gtk4 libadwaita pkgconf base-devel systemd
+```
