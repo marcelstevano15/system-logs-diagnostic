@@ -19,26 +19,40 @@
 * **Concurrency**: `Rc<RefCell>` state management for fluid UI updates
 * **Data Source**: `systemd` journal via `journalctl` , `systemd-journal-reader` and `last -x`
 
-# Dependencies
+# System Dependencies Installation Guide
 
-## Ubuntu / Debian / Linux Mint
+To compile and run this application from source, the host system must have the development headers for GTK4, Libadwaita, and systemd libraries installed.
+
+Execute the exact command corresponding to your Linux distribution to install all required packages from the official repositories:
+
+---
+
+## Ubuntu / Debian & Derivatives
 
 ```bash
-sudo apt install libgtk-4-dev libadwaita-1-dev pkg-config build-essential libsystemd-dev
+sudo apt update
+sudo apt install -y build-essential pkg-config \
+libgtk-4-dev libadwaita-1-dev libsystemd-dev \
+util-linux
 ```
 
 ---
 
-## Fedora
+## Fedora / RHEL & Derivatives
 
 ```bash
-sudo dnf install gtk4-devel libadwaita-devel pkgconf-pkg-config gcc systemd-devel
+sudo dnf check-update
+sudo dnf install -y gcc pkgconf-pkg-config \
+gtk4-devel libadwaita-devel systemd-devel \
+util-linux
 ```
 
 ---
 
-## Arch Linux
+## Arch Linux / Manjaro & Derivatives
 
 ```bash
-sudo pacman -S gtk4 libadwaita pkgconf base-devel systemd
+sudo pacman -Syu
+sudo pacman -S --needed base-devel pkgconf gtk4 \
+libadwaita systemd-libs util-linux
 ```
