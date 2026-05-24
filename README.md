@@ -1,33 +1,128 @@
-# System Logs Diagnostic 🛠️
+# System Logs Diagnostic
 
-**System Logs Diagnostic** is a high-performance Linux system utility built with **Rust**, **GTK4**, and **Libadwaita**. It provides a modern, native interface for analyzing system logs, auditing power states, and performing real-time health diagnostics by interfacing directly with `systemd` journals.
+System Logs Diagnostic is a modern Linux diagnostics application built with Rust, GTK4, and Libadwaita.  
+It provides a clean graphical interface for viewing, analyzing, and monitoring system logs directly from the `systemd` journal.
 
-## 🚀 Key Features
-
-* **Deep Journal Integration**: Moves beyond simple text parsing to structured JSON analysis, extracting precise metadata from `journalctl` for higher reliability.
-* **Intelligent Severity Mapping**: Automatically categorizes logs into **Panic**, **Error**, and **Warning** levels with distinct visual tagging for rapid troubleshooting.
-* **Dynamic Data Management**: Features a robust sorting engine allowing you to organize logs by **Process name**, **Timestamp**, or **Severity level**.
-* **Advanced Search & Filtering**: A global search interface that enables real-time filtering of thousands of log entries without performance lag.
-* **Hardware & Power Auditing**: Includes dedicated diagnostics for system power cycles, identifying unexpected shutdowns and kernel-level anomalies.
-* **Native GNOME Experience**: Leverages `Libadwaita` for a sleek, responsive UI that supports dark mode and follows modern Linux design standards.
-
-## 🛠️ Technical Stack
-
-* **Core**: [Rust](https://www.rust-lang.org/) (Memory-safe and high-performance)
-* **UI**: [GTK4](https://www.gtk.org/) & [Libadwaita](https://gnome.pages.gitlab.gnome.org/libadwaita/)
-* **Serialization**: `serde_json` for structured journal parsing
-* **Concurrency**: `Rc<RefCell>` state management for fluid UI updates
-* **Data Source**: `systemd` journal via `journalctl` , `systemd-journal-reader` and `last -x`
-
-# System Dependencies Installation Guide
-
-To compile and run this application from source, the host system must have the development headers for GTK4, Libadwaita, and systemd libraries installed.
-
-Execute the exact command corresponding to your Linux distribution to install all required packages from the official repositories:
+The application is designed to make Linux diagnostics easier to understand for both regular users and advanced Linux users, without requiring complicated terminal commands.
 
 ---
 
-## Ubuntu / Debian & Derivatives
+# Overview
+
+Linux systems constantly generate logs related to applications, drivers, services, hardware, and the kernel.  
+Reading these logs manually can be difficult, especially when troubleshooting crashes, shutdown issues, or unexpected system behavior.
+
+System Logs Diagnostic simplifies this process by presenting system logs in a structured, searchable, and easy-to-read interface with intelligent categorization and filtering.
+
+Instead of relying on fragile text parsing, the application communicates directly with the `systemd` journal for more reliable diagnostics.
+
+---
+
+# Features
+
+## Structured Journal Analysis
+
+Reads logs directly from the `systemd` journal using structured JSON parsing for improved reliability and cleaner data extraction.
+
+## Intelligent Severity Detection
+
+Automatically categorizes logs into:
+
+- Panic
+- Error
+- Warning
+- Information
+
+Each category includes visual indicators to make troubleshooting faster and easier.
+
+## Fast Search & Filtering
+
+Provides real-time filtering across thousands of log entries with smooth performance.
+
+Users can search logs by:
+
+- Process name
+- Message content
+- Severity level
+- Timestamp
+
+## Dynamic Sorting
+
+Supports sorting logs by:
+
+- Timestamp
+- Severity
+- Process name
+- Event type
+
+This helps users quickly identify important events and system issues.
+
+## Power & Shutdown Diagnostics
+
+Includes tools for detecting:
+
+- Unexpected shutdowns
+- Reboot history
+- Power cycle events
+- Kernel-related problems
+
+Information is collected using `journalctl` and `last -x`.
+
+## Native GNOME Experience
+
+Built with GTK4 and Libadwaita to provide:
+
+- Modern Linux interface
+- Dark mode support
+- Responsive layout
+- Native GNOME integration
+- Smooth user experience
+
+---
+
+# Technical Stack
+
+| Component | Technology |
+|---|---|
+| Core Language | Rust |
+| User Interface | GTK4 + Libadwaita |
+| Journal Parsing | serde_json |
+| System Integration | systemd journal |
+| State Management | Rc<RefCell> |
+| Diagnostics Sources | journalctl, systemd-journal-reader, last -x |
+
+---
+
+# Why Rust?
+
+Rust provides:
+
+- High performance
+- Memory safety
+- Better reliability
+- Low resource usage
+- Strong concurrency support
+
+This makes the application fast, stable, and suitable for continuous diagnostics.
+
+---
+
+# System Requirements
+
+Before compiling the application from source, install the required development packages for:
+
+- GTK4
+- Libadwaita
+- systemd
+- Build tools
+
+Use the installation command for your Linux distribution below.
+
+---
+
+# Dependency Installation
+
+## Ubuntu / Debian
 
 ```bash
 sudo apt update
@@ -38,7 +133,7 @@ util-linux
 
 ---
 
-## Fedora / RHEL & Derivatives
+## Fedora / RHEL
 
 ```bash
 sudo dnf check-update
@@ -49,10 +144,68 @@ util-linux
 
 ---
 
-## Arch Linux / Manjaro & Derivatives
+## Arch Linux / Manjaro
 
 ```bash
 sudo pacman -Syu
 sudo pacman -S --needed base-devel pkgconf gtk4 \
 libadwaita systemd-libs util-linux
 ```
+
+---
+
+# Build Instructions
+
+Clone the repository and build the project using Cargo:
+
+```bash
+git clone <repository-url>
+cd system-logs-diagnostic
+cargo build --release
+```
+
+Run the application:
+
+```bash
+cargo run --release
+```
+
+---
+
+# Use Cases
+
+System Logs Diagnostic can be used for:
+
+- Linux troubleshooting
+- System monitoring
+- Crash analysis
+- Power failure diagnostics
+- Kernel issue detection
+- GNOME desktop environments
+- Development debugging
+
+---
+
+# Project Goal
+
+The goal of this project is to make Linux system diagnostics:
+
+- Easier to understand
+- Faster to analyze
+- More accessible for regular users
+- More efficient for advanced users
+
+The application combines low-level Linux logging tools with a modern graphical interface for a cleaner diagnostic experience.
+
+---
+
+# License
+
+This project is licensed under the GNU General Public License v3.0 (GPL-3.0).
+
+You are free to use, modify, and distribute this software under the terms of the GPL-3.0 license.  
+Any modified versions or derivative works distributed to others must also remain open source under the same license.
+
+For more information, see the `LICENSE` file or visit:
+
+https://www.gnu.org/licenses/gpl-3.0.en.html
