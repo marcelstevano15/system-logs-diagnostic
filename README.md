@@ -24,6 +24,56 @@ Instead of relying on fragile text parsing, the application communicates directl
 
 Reads logs directly from the `systemd` journal using structured JSON parsing for improved reliability and cleaner data extraction.
 
+## Refresh & Auto-Reload System
+
+System Logs Diagnostic includes a built-in refresh system for keeping diagnostic data synchronized with the latest system state.
+
+---
+
+### Manual Refresh
+
+A dedicated refresh button is available in the header bar next to the sorting controls.
+
+Users can manually reload and update:
+
+- Current session logs
+- Kernel logs
+- System errors
+- Shutdown diagnostics
+- Power audit information
+
+without restarting the application.
+
+---
+
+### Automatic Refresh
+
+The application also performs automatic refresh operations whenever a category in the left navigation panel is selected.
+
+Each time the user switches between sections such as:
+
+- Current Session Logs
+- Last Shutdown Logs
+- Power Audit
+- System Errors
+- Kernel Logs
+
+the application automatically reloads the latest available diagnostic data in real time.
+
+---
+
+## Benefits
+
+This behavior ensures:
+
+- Up-to-date diagnostics
+- Faster troubleshooting
+- Reduced stale log states
+- Improved monitoring workflow
+- Better real-time system visibility
+
+---
+
 ## Intelligent Severity Detection
 
 Automatically categorizes logs into:
@@ -84,12 +134,14 @@ Built with GTK4 and Libadwaita to provide:
 
 | Component | Technology |
 |---|---|
-| Core Language | Rust |
-| User Interface | GTK4 + Libadwaita |
+| Programming Language | Rust |
+| GUI Framework | GTK4 |
+| UI Library | Libadwaita |
 | Journal Parsing | serde_json |
+| Async Communication | async-channel |
+| Shared UI State | Rc<RefCell<T>> |
 | System Integration | systemd journal |
-| State Management | Rc<RefCell> |
-| Diagnostics Sources | journalctl, systemd-journal-reader, last -x |
+| Time Handling | chrono |
 
 ---
 
@@ -154,7 +206,7 @@ The following features require 'systemd and will not function correctly on non-s
 | Ubuntu | 24.04 LTS | Latest LTS |
 | Debian | Debian 13 / Testing | Latest |
 | Fedora | Fedora 39 | Fedora 40+ |
-| Arch Linux | Rolling | Rolling |
+| Arch Linux | 2024 System Snapshot | Latest release |
 | Manjaro | Latest Stable | Latest Stable |
 | Linux Mint | 22 | Latest |
 | Pop!_OS | 24.04 | Latest |
@@ -226,6 +278,83 @@ util-linux
 sudo pacman -Syu
 sudo pacman -S --needed base-devel pkgconf gtk4 \
 libadwaita systemd-libs util-linux
+```
+
+---
+
+# Installation Guide
+
+## 1. Open GitHub Releases Page
+
+Download the latest release package from:
+
+```text
+https://github.com/marcelstevano15/system-logs-diagnostic/releases
+```
+
+Download the appropriate `.tar.gz` archive 
+
+---
+
+## 2. Open Downloads Directory
+
+After the download is complete, open a terminal and enter the Downloads directory:
+
+```bash
+cd ~/Downloads
+```
+
+---
+
+## 3. Extract Release Archive
+
+Extract the downloaded archive:
+
+```bash
+tar -xzf system-logs-diagnostic.tar.gz
+```
+
+---
+
+## 4. Enter Extracted Directory
+
+Navigate into the extracted application directory:
+
+```bash
+cd system-logs-diagnostic
+```
+
+---
+
+## 5. Run Installation Script
+
+Start the installer:
+
+```bash
+./install.sh
+```
+
+If the installer is not executable, run:
+
+```bash
+chmod +x install.sh
+./install.sh
+```
+
+---
+
+## 6. Launch Application
+
+After installation completes, launch the application from:
+
+- GNOME Applications Menu
+- Linux App Launcher
+- Terminal
+
+Or start it manually:
+
+```bash
+system-logs-diagnostic
 ```
 
 ---
