@@ -116,6 +116,82 @@ Before compiling the application from source, install the required development p
 - systemd
 - Build tools
 
+# Supported Linux Distributions
+
+System Logs Diagnostic supports most modern Linux distributions that use:
+
+- `systemd`
+- GTK4
+- Libadwaita
+
+Because the application depends on modern GTK4 and Libadwaita libraries, older Linux releases may not provide compatible packages by default. 0
+
+---
+
+
+# Unsupported Features Without systemd
+
+The following features require 'systemd and will not function correctly on non-systemd environments:
+
+- Current session journal logs
+
+- Previous boot journal logs
+
+- Structured JSON journal parsing
+
+- Kernel journal diagnostics
+
+- Severity-based journal analysis
+
+- Real-time journal filtering
+
+- journalctl integration
+
+# Minimum Supported Linux Versions
+
+| Distribution | Minimum Version | Recommended |
+|---|---|---|
+| Ubuntu | 24.04 LTS | Latest LTS |
+| Debian | Debian 13 / Testing | Latest |
+| Fedora | Fedora 39 | Fedora 40+ |
+| Arch Linux | Rolling | Rolling |
+| Manjaro | Latest Stable | Latest Stable |
+| Linux Mint | 22 | Latest |
+| Pop!_OS | 24.04 | Latest |
+| openSUSE Tumbleweed | Current | Current |
+
+---
+
+# Why Modern Versions Are Required
+
+System Logs Diagnostic depends on:
+
+- GTK4
+- Libadwaita 1.6
+- Modern systemd APIs
+- Rust GTK bindings (`gtk4-rs 0.9`)
+- GNOME modern runtime stack
+
+Older Linux distributions may not provide sufficiently recent GTK4 or Libadwaita packages required by the application.
+---
+
+# Unsupported Systems
+
+The following systems are not supported:
+
+- Windows
+- macOS
+- Linux distributions without `systemd`
+- Minimal Linux environments without GTK4 support
+
+Examples:
+
+- Alpine Linux (OpenRC)
+- Devuan (SysVinit)
+- Artix OpenRC
+
+---
+
 Use the installation command for your Linux distribution below.
 
 ---
