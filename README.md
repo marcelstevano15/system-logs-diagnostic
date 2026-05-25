@@ -288,9 +288,7 @@ libadwaita systemd-libs util-linux
 
 Download the latest release package from:
 
-```text
 https://github.com/marcelstevano15/system-logs-diagnostic/releases
-```
 
 Download the appropriate `.tar.gz` archive 
 
