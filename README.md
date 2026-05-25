@@ -62,7 +62,7 @@ the application automatically reloads the latest available diagnostic data in re
 
 ---
 
-## Benefits
+### Benefits
 
 This behavior ensures:
 
