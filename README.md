@@ -362,7 +362,7 @@ system-logs-diagnostic
 Clone the repository and build the project using Cargo:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/marcelstevano15/system-logs-diagnostic.git
 cd system-logs-diagnostic
 cargo build --release
 ```
