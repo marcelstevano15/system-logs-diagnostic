@@ -375,6 +375,16 @@ cargo run --release
 
 ---
 
+# Screenshots 
+
+<img width="1024" height="600" alt="123765" src="https://github.com/user-attachments/assets/f03d4af4-cb0e-43af-ae14-863815ad79e1" />
+<img width="1024" height="600" alt="123766" src="https://github.com/user-attachments/assets/64b16cbe-586d-40e4-a19a-e6870fa7b919" />
+<img width="1024" height="600" alt="123767" src="https://github.com/user-attachments/assets/46e58ea3-527c-4682-a37b-45944cfbbef5" />
+<img width="1024" height="600" alt="123768" src="https://github.com/user-attachments/assets/665836b9-fe7d-4e12-bab3-e14bd8f4ea7c" />
+<img width="1024" height="600" alt="123770" src="https://github.com/user-attachments/assets/f90c82be-8b79-4a59-a9e6-c23fcb4c6e66" />
+
+---
+
 # Use Cases
 
 System Logs Diagnostic can be used for:
