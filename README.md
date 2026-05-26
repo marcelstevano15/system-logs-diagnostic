@@ -257,9 +257,24 @@ sudo apt update
 sudo apt install -y build-essential pkg-config \
 libgtk-4-dev libadwaita-1-dev libsystemd-dev \
 util-linux
+=======
+* **Core**: [Rust](https://www.rust-lang.org/) (Memory-safe and high-performance)
+* **UI**: [GTK4](https://www.gtk.org/) & [Libadwaita](https://gnome.pages.gitlab.gnome.org/libadwaita/)
+* **Serialization**: `serde_json` for structured journal parsing
+* **Concurrency**: `Rc<RefCell>` state management for fluid UI updates
+* **Data Source**: `systemd` journal via `journalctl` , `systemd-journal-reader` and `last -x`
+
+# Dependencies
+
+## Ubuntu / Debian / Linux Mint
+
+```bash
+sudo apt install libgtk-4-dev libadwaita-1-dev pkg-config build-essential libsystemd-dev
+>>>>>>> 9af3087 (Add multiple icon size installation support)
 ```
 
 ---
+
 
 ## Fedora / RHEL
 
@@ -268,6 +283,12 @@ sudo dnf check-update
 sudo dnf install -y gcc pkgconf-pkg-config \
 gtk4-devel libadwaita-devel systemd-devel \
 util-linux
+=======
+## Fedora
+
+```bash
+sudo dnf install gtk4-devel libadwaita-devel pkgconf-pkg-config gcc systemd-devel
+>>>>>>> 9af3087 (Add multiple icon size installation support)
 ```
 
 ---
@@ -422,3 +443,10 @@ Any modified versions or derivative works distributed to others must also remain
 For more information, see the `LICENSE` file or visit:
 
 https://www.gnu.org/licenses/gpl-3.0.en.html
+=======
+## Arch Linux
+
+```bash
+sudo pacman -S gtk4 libadwaita pkgconf base-devel systemd
+```
+>>>>>>> 9af3087 (Add multiple icon size installation support)
