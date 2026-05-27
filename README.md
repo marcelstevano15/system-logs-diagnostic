@@ -225,39 +225,16 @@ native system library version.
 
 | Distribution | Minimum Supported Version | Recommended |
 |---|---|---|
-| Ubuntu | 24.10 | Latest Stable |
-| Debian | Debian 13 (Trixie) / Testing | Latest |
-| Fedora | Fedora 41 | Latest |
+| Ubuntu | 24.04 | Latest Stable |
+| Debian | Debian 13 (Trixie) | Latest
+| Fedora | Fedora 40 | Latest |
 | Arch Linux | Rolling Release (Updated) | Latest |
 | Manjaro | Latest Stable | Latest Stable |
-| Linux Mint | Unsupported (based on Ubuntu 24.04) | — |
-| Pop!_OS | Unsupported (based on Ubuntu 24.04) | — |
+| Linux Mint | 22 | Latest |
+| Pop!_OS | 24.04 | Latest |
 | openSUSE Leap | 16.0* | Tumbleweed |
 | openSUSE Tumbleweed | Current Snapshot | Current |
 
----
-
-## Notes
-
-### Ubuntu 24.04 LTS
-
-Ubuntu 24.04 ships libadwaita 1.5, which is below the required minimum version.
-
-### Debian 12 (Bookworm)
-
-Debian 12 ships GTK4 4.8 and older libadwaita releases which do not satisfy the minimum requirements.
-
-### Linux Mint / Pop!_OS
-
-Current releases inherit Ubuntu 24.04 repositories and therefore lack libadwaita 1.6 out-of-the-box.
-
-### openSUSE Leap 16
-
-Leap 16 generally provides sufficiently recent GTK/libadwaita stacks, though package availability may vary depending on repository snapshot and enabled repositories.
-
-### Rolling Release Distributions
-
-Arch Linux, Manjaro, and openSUSE Tumbleweed are generally supported as long as the system is fully updated.
 
 ---
 
