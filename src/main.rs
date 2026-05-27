@@ -583,7 +583,7 @@ let tag = buf.tag_table().lookup(&tag_id).unwrap_or_else(|| {
             let about = adw::AboutDialog::builder()
                 .application_name("System Logs Diagnostic")
                 .application_icon("com.marcel.system-logs-diagnostic")
-                .version("1.5.0")
+                .version("1.5.1")
                 .developer_name("Marcel Stevano")
                 .license_type(gtk::License::Gpl30)
                 .website("https://github.com/marcelstevano15/system-logs-diagnostic")

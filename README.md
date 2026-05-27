@@ -85,6 +85,8 @@ Automatically categorizes logs into:
 
 Each category includes visual indicators to make troubleshooting faster and easier.
 
+---
+
 ## Fast Search & Filtering
 
 Provides real-time filtering across thousands of log entries with smooth performance.
@@ -117,6 +119,8 @@ Includes tools for detecting:
 - Kernel-related problems
 
 Information is collected using `journalctl` and `last -x`.
+
+---
 
 ## Native GNOME Experience
 
@@ -168,6 +172,8 @@ Before compiling the application from source, install the required development p
 - systemd
 - Build tools
 
+---
+
 # Supported Linux Distributions
 
 System Logs Diagnostic supports most modern Linux distributions that use:
@@ -176,7 +182,7 @@ System Logs Diagnostic supports most modern Linux distributions that use:
 - GTK4
 - Libadwaita
 
-Because the application depends on modern GTK4 and Libadwaita libraries, older Linux releases may not provide compatible packages by default. 0
+Because the application depends on modern GTK4 and Libadwaita libraries, older Linux releases may not provide compatible packages by default.
 
 ---
 
@@ -199,18 +205,86 @@ The following features require 'systemd and will not function correctly on non-s
 
 - journalctl integration
 
+---
+
+# Platform Requirements
+
+This application targets modern Linux desktop environments and requires a recent GNOME software stack.
+
+---
+
 # Minimum Supported Linux Versions
 
-| Distribution | Minimum Version | Recommended |
+The project requires:
+
+- GTK4 >= 4.12
+- libadwaita >= 1.6
+
+The Rust `libadwaita` crate version is unrelated to the required
+native system library version.
+
+| Distribution | Minimum Supported Version | Recommended |
 |---|---|---|
-| Ubuntu | 24.04 LTS | Latest LTS |
-| Debian | Debian 13 / Testing | Latest |
-| Fedora | Fedora 39 | Fedora 40+ |
-| Arch Linux | 2024 System Snapshot | Latest release |
+| Ubuntu | 24.10 | Latest Stable |
+| Debian | Debian 13 (Trixie) / Testing | Latest |
+| Fedora | Fedora 41 | Latest |
+| Arch Linux | Rolling Release (Updated) | Latest |
 | Manjaro | Latest Stable | Latest Stable |
-| Linux Mint | 22 | Latest |
-| Pop!_OS | 24.04 | Latest |
-| openSUSE Tumbleweed | Current | Current |
+| Linux Mint | Unsupported (based on Ubuntu 24.04) | — |
+| Pop!_OS | Unsupported (based on Ubuntu 24.04) | — |
+| openSUSE Leap | 16.0* | Tumbleweed |
+| openSUSE Tumbleweed | Current Snapshot | Current |
+
+---
+
+## Notes
+
+### Ubuntu 24.04 LTS
+
+Ubuntu 24.04 ships libadwaita 1.5, which is below the required minimum version.
+
+### Debian 12 (Bookworm)
+
+Debian 12 ships GTK4 4.8 and older libadwaita releases which do not satisfy the minimum requirements.
+
+### Linux Mint / Pop!_OS
+
+Current releases inherit Ubuntu 24.04 repositories and therefore lack libadwaita 1.6 out-of-the-box.
+
+### openSUSE Leap 16
+
+Leap 16 generally provides sufficiently recent GTK/libadwaita stacks, though package availability may vary depending on repository snapshot and enabled repositories.
+
+### Rolling Release Distributions
+
+Arch Linux, Manjaro, and openSUSE Tumbleweed are generally supported as long as the system is fully updated.
+
+---
+
+## Legacy Compatibility Branch
+
+Compatibility-focused fork is currently under development for older Linux distributions.
+
+The legacy branch is planned to target:
+
+- GTK3
+- Earlier libadwaita releases
+- Older GNOME platform versions
+- Long-term support distributions
+
+This main branch will continue focusing on modern GTK4/libadwaita development and newer Linux desktop environments.
+
+---
+
+## Unsupported Workarounds
+
+The following setups are not officially supported:
+
+- Mixing repositories from newer distributions
+- Partial GNOME stack upgrades
+- Manual replacement of system GTK libraries
+
+These configurations may cause dependency conflicts or unstable desktop environments.
 
 ---
 
@@ -225,6 +299,7 @@ System Logs Diagnostic depends on:
 - GNOME modern runtime stack
 
 Older Linux distributions may not provide sufficiently recent GTK4 or Libadwaita packages required by the application.
+
 ---
 
 # Unsupported Systems
@@ -250,27 +325,18 @@ Use the installation command for your Linux distribution below.
 
 # Dependency Installation
 
+The following system dependencies are **strictly required only if you intend to build or run the application from source** using Rust/Cargo. If you are deploying or installing via pre-compiled binaries, you may skip this section.
+
+---
+
 ## Ubuntu / Debian
 
 ```bash
 sudo apt update
-sudo apt install -y build-essential pkg-config \
-libgtk-4-dev libadwaita-1-dev libsystemd-dev \
-util-linux
-=======
-* **Core**: [Rust](https://www.rust-lang.org/) (Memory-safe and high-performance)
-* **UI**: [GTK4](https://www.gtk.org/) & [Libadwaita](https://gnome.pages.gitlab.gnome.org/libadwaita/)
-* **Serialization**: `serde_json` for structured journal parsing
-* **Concurrency**: `Rc<RefCell>` state management for fluid UI updates
-* **Data Source**: `systemd` journal via `journalctl` , `systemd-journal-reader` and `last -x`
+sudo apt install build-essential pkg-config \
+  libgtk-4-dev libadwaita-1-dev libsystemd-dev \
+  libgraphene-1-dev libzstd-dev util-linux
 
-# Dependencies
-
-## Ubuntu / Debian / Linux Mint
-
-```bash
-sudo apt install libgtk-4-dev libadwaita-1-dev pkg-config build-essential libsystemd-dev
->>>>>>> 9af3087 (Add multiple icon size installation support)
 ```
 
 ---
@@ -279,26 +345,22 @@ sudo apt install libgtk-4-dev libadwaita-1-dev pkg-config build-essential libsys
 ## Fedora / RHEL
 
 ```bash
-sudo dnf check-update
 sudo dnf install -y gcc pkgconf-pkg-config \
-gtk4-devel libadwaita-devel systemd-devel \
-util-linux
-=======
-## Fedora
+  gtk4-devel libadwaita-devel systemd-devel \
+  graphene-devel zstd-devel util-linux
 
-```bash
-sudo dnf install gtk4-devel libadwaita-devel pkgconf-pkg-config gcc systemd-devel
->>>>>>> 9af3087 (Add multiple icon size installation support)
 ```
 
 ---
+
 
 ## Arch Linux / Manjaro
 
 ```bash
 sudo pacman -Syu
 sudo pacman -S --needed base-devel pkgconf gtk4 \
-libadwaita systemd-libs util-linux
+  libadwaita systemd graphene zstd util-linux
+
 ```
 
 ---
@@ -370,12 +432,6 @@ After installation completes, launch the application from:
 - Linux App Launcher
 - Terminal
 
-Or start it manually:
-
-```bash
-system-logs-diagnostic
-```
-
 ---
 
 # Build Instructions
@@ -443,10 +499,5 @@ Any modified versions or derivative works distributed to others must also remain
 For more information, see the `LICENSE` file or visit:
 
 https://www.gnu.org/licenses/gpl-3.0.en.html
-=======
-## Arch Linux
 
-```bash
-sudo pacman -S gtk4 libadwaita pkgconf base-devel systemd
-```
->>>>>>> 9af3087 (Add multiple icon size installation support)
+
