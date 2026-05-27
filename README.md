@@ -218,7 +218,7 @@ This application targets modern Linux desktop environments and requires a recent
 The project requires:
 
 - GTK4 >= 4.12
-- libadwaita >= 1.6
+- libadwaita >= 1.5
 
 The Rust `libadwaita` crate version is unrelated to the required
 native system library version.
@@ -270,7 +270,7 @@ These configurations may cause dependency conflicts or unstable desktop environm
 System Logs Diagnostic depends on:
 
 - GTK4
-- Libadwaita 1.6
+- Libadwaita 1.5
 - Modern systemd APIs
 - Rust GTK bindings (`gtk4-rs 0.9`)
 - GNOME modern runtime stack
