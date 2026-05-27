@@ -57,6 +57,7 @@ fn get_adaptive_color(severity_key: &str, is_dark: bool) -> Option<&str> {
 }
 
 
+
 fn diagnose_system(
     raw_input: &str,
     idx: i32,
@@ -134,10 +135,10 @@ fn diagnose_system(
                 "emblem-ok-symbolic",
             )
         }
-    } else     if idx == 3 {
+    } else if idx == 3 {
         if error_count > 0 || panic_count > 0 {
             (
-                format!("Critical System Events Detected {} Critical Logs", panic_count + error_count),
+                format!("Critical System Events Detected: {} Critical Logs", panic_count + error_count),
                 format!("Critical system events detected at {}. Logs available for inspection.", current_time),
                 "destructive",
                 "dialog-error-symbolic",
@@ -150,36 +151,31 @@ fn diagnose_system(
                 "emblem-ok-symbolic",
             )
         }
-    } else if panic_count > 0 {
-        (
-            format!("Critical Operational Failure Detected: {} Events", panic_count),
-            format!("Critical system events detected at {}. Logs are available for inspection.", current_time),
-            "destructive",
-            "software-update-urgent-symbolic",
-        )
-    } else if error_count > 0 {
-          (
-            format!("Services Failures: {} Events", error_count),
-            format!("One or more services failed. Core system operating normally, reported at {}.", current_time),
-            "destructive",
-            "dialog-error-symbolic",
-        )
-    } else if warning_count > 0 {
-        (
-            format!("System Operational: {} Minor Services Events Recorded", warning_count),
-            format!("System operational: {} non-critical events recorded at {}.", warning_count, current_time),
-            "warning",
-            "dialog-warning-symbolic",
-        )
     } else {
-        (
-            "System Integrity: Verified".to_string(),
-            format!("No anomalies detected. All parameters nominal at {}.", current_time),
-            "success",
-            "emblem-ok-symbolic",
-        )
+        let total_critical_events = panic_count + error_count;
+        if total_critical_events > 0 {
+            (
+                format!("Critical Operational Failure Detected: {} Events", total_critical_events),
+                format!("Critical system events detected at {}. Logs are available for inspection.", current_time),
+                "destructive",
+                "software-update-urgent-symbolic",
+            )
+        } else if warning_count > 0 {
+            (
+                format!("System Operational: {} Minor Services Events Recorded", warning_count),
+                format!("System operational: {} non-critical events recorded at {}.", warning_count, current_time),
+                "warning",
+                "dialog-warning-symbolic",
+            )
+        } else {
+            (
+                "System Integrity: Verified".to_string(),
+                format!("No anomalies detected. All parameters nominal at {}.", current_time),
+                "success",
+                "emblem-ok-symbolic",
+            )
+        }
     }
-
 }
 
 
@@ -630,3 +626,4 @@ let tag = buf.tag_table().lookup(&tag_id).unwrap_or_else(|| {
     u_rc(0);
     window.present();
 }
+
