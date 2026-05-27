@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
 APP_ID="com.marcel.system-logs-diagnostic"
 BINARY_NAME="system-logs-diagnostic"
 BINARY_PATH="./target/release/$BINARY_NAME"
@@ -48,6 +51,12 @@ Categories=System;Monitor;GTK;
 StartupWMClass=$BINARY_NAME
 Keywords=log;diagnostic;kernel;panic;
 EOF
+
+# LICENSE install
+if [ -f "LICENSE" ]; then
+    sudo mkdir -p /usr/share/licenses/$BINARY_NAME
+    sudo cp LICENSE /usr/share/licenses/$BINARY_NAME/LICENSE
+fi
 
 sudo update-desktop-database "$DESKTOP_ENTRY_DIR"
 

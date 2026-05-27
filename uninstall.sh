@@ -21,6 +21,9 @@ for size in 48x48 64x64 96x96 128x128 256x256 512x512; do
         /usr/share/icons/hicolor/$size/apps/$APP_ID.png
 done
 
+# Remove LICENSE
+sudo rm -rf /usr/share/licenses/$BINARY_NAME
+
 # Update icon cache
 sudo gtk-update-icon-cache -f -t /usr/share/icons/hicolor/ || true
 
