@@ -322,7 +322,7 @@ sudo apt install build-essential pkg-config \
 ## Fedora / RHEL
 
 ```bash
-sudo dnf install -y gcc pkgconf-pkg-config \
+sudo dnf install gcc pkgconf-pkg-config \
   gtk4-devel libadwaita-devel systemd-devel \
   graphene-devel zstd-devel util-linux
 
