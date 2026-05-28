@@ -3,6 +3,34 @@
 
 ---
 
+## Why Version 3.0.0?
+
+The project intentionally skips the traditional `2.x` generation because the scale of architectural transformation exceeds the scope of a conventional major update.
+
+Version **3.0.0** is not an incremental continuation of the 1.x platform.
+
+It represents a complete internal platform redesign involving:
+
+- Full migration from monolithic architecture to modular infrastructure
+- Introduction of async runtime orchestration
+- Realtime journal streaming systems
+- Enterprise diagnostics engine
+- Structured incident modeling
+- Complete UI framework decomposition
+- New event transport architecture
+- Rewritten application state management
+- Foundational observability platform infrastructure
+
+The magnitude of these engineering changes effectively establishes a new generation of the platform rather than a traditional sequential upgrade.
+
+For that reason, the project transitions directly from the 1.x generation into the next foundational architecture milestone:
+
+```text
+1.x  →  3.0.0
+```
+
+The `2.x` generation was intentionally omitted to reflect the scale, direction, and long-term platform evolution introduced by the new architecture.
+
 # Executive Overview
 
 **System Logs Diagnostic 3.0.0** represents the largest engineering transition in the project's history.
