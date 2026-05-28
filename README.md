@@ -5,6 +5,22 @@ It provides a clean graphical interface for viewing, analyzing, and monitoring s
 
 The application is designed to make Linux diagnostics easier to understand for both regular users and advanced Linux users, without requiring complicated terminal commands.
 
+## Current Development Status
+
+System Logs Diagnostic is currently undergoing its largest architectural transition.
+
+Version **3.0.0** is actively in development and introduces a complete platform rewrite focused on scalability, realtime observability, modular infrastructure, and enterprise diagnostics systems.
+
+---
+
+## Major Platform Evolution
+
+The platform is evolving from a monolithic GTK diagnostic utility into a fully modular enterprise observability architecture.
+
+Read the complete development roadmap here:
+
+- [Roadmap Evolution 1.5.1 → 3.0.0](./ROADMAP.md)
+
 ---
 
 # Overview
