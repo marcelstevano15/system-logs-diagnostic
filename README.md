@@ -5,6 +5,22 @@ It provides a clean graphical interface for viewing, analyzing, and monitoring s
 
 The application is designed to make Linux diagnostics easier to understand for both regular users and advanced Linux users, without requiring complicated terminal commands.
 
+## Current Development Status
+
+System Logs Diagnostic is currently undergoing its largest architectural transition.
+
+Version **3.0.0** is actively in development and introduces a complete platform rewrite focused on scalability, realtime observability, modular infrastructure, and enterprise diagnostics systems.
+
+---
+
+## Major Platform Evolution
+
+The platform is evolving from a monolithic GTK diagnostic utility into a fully modular enterprise observability architecture.
+
+Read the complete development roadmap here:
+
+- [Roadmap Evolution 1.5.1 → 3.0.0](./ROADMAP.md)
+
 ---
 
 # Overview
@@ -218,46 +234,23 @@ This application targets modern Linux desktop environments and requires a recent
 The project requires:
 
 - GTK4 >= 4.12
-- libadwaita >= 1.6
+- libadwaita >= 1.5
 
 The Rust `libadwaita` crate version is unrelated to the required
 native system library version.
 
 | Distribution | Minimum Supported Version | Recommended |
 |---|---|---|
-| Ubuntu | 24.10 | Latest Stable |
-| Debian | Debian 13 (Trixie) / Testing | Latest |
-| Fedora | Fedora 41 | Latest |
+| Ubuntu | 24.04 | Latest Stable |
+| Debian | Debian 13 (Trixie) | Latest
+| Fedora | Fedora 40 | Latest |
 | Arch Linux | Rolling Release (Updated) | Latest |
 | Manjaro | Latest Stable | Latest Stable |
-| Linux Mint | Unsupported (based on Ubuntu 24.04) | — |
-| Pop!_OS | Unsupported (based on Ubuntu 24.04) | — |
+| Linux Mint | 22 | Latest |
+| Pop!_OS | 24.04 | Latest |
 | openSUSE Leap | 16.0* | Tumbleweed |
 | openSUSE Tumbleweed | Current Snapshot | Current |
 
----
-
-## Notes
-
-### Ubuntu 24.04 LTS
-
-Ubuntu 24.04 ships libadwaita 1.5, which is below the required minimum version.
-
-### Debian 12 (Bookworm)
-
-Debian 12 ships GTK4 4.8 and older libadwaita releases which do not satisfy the minimum requirements.
-
-### Linux Mint / Pop!_OS
-
-Current releases inherit Ubuntu 24.04 repositories and therefore lack libadwaita 1.6 out-of-the-box.
-
-### openSUSE Leap 16
-
-Leap 16 generally provides sufficiently recent GTK/libadwaita stacks, though package availability may vary depending on repository snapshot and enabled repositories.
-
-### Rolling Release Distributions
-
-Arch Linux, Manjaro, and openSUSE Tumbleweed are generally supported as long as the system is fully updated.
 
 ---
 
@@ -293,7 +286,7 @@ These configurations may cause dependency conflicts or unstable desktop environm
 System Logs Diagnostic depends on:
 
 - GTK4
-- Libadwaita 1.6
+- Libadwaita 1.5
 - Modern systemd APIs
 - Rust GTK bindings (`gtk4-rs 0.9`)
 - GNOME modern runtime stack
@@ -345,7 +338,7 @@ sudo apt install build-essential pkg-config \
 ## Fedora / RHEL
 
 ```bash
-sudo dnf install -y gcc pkgconf-pkg-config \
+sudo dnf install gcc pkgconf-pkg-config \
   gtk4-devel libadwaita-devel systemd-devel \
   graphene-devel zstd-devel util-linux
 
