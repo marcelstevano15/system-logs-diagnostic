@@ -7,17 +7,6 @@ The application is designed to make Linux diagnostics easier to understand for b
 
 ---
 
-
-## Major Platform Evolution
-
-The platform is evolving from a monolithic GTK diagnostic utility into a fully modular enterprise observability architecture.
-
-Read the complete development roadmap here:
-
-- [Roadmap Evolution 1.5.1 → 3.0.0](./ROADMAP.md)
-
----
-
 # Overview
 
 Linux systems constantly generate logs related to applications, drivers, services, hardware, and the kernel.  
