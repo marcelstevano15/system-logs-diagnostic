@@ -26,6 +26,12 @@ Version 3.0.0 | License: GPL-3.0-or-later | Author: Marcel Stevano
 
 ---
 
+<img width="1024" height="600" alt="19710" src="https://github.com/user-attachments/assets/8b3d8c40-424e-4890-9247-0117bb16b8ee" />
+<img width="1024" height="600" alt="19711" src="https://github.com/user-attachments/assets/b7deaad2-b5de-4540-8a93-8aefb77e9e6b" />
+<img width="1024" height="600" alt="19712" src="https://github.com/user-attachments/assets/38220afe-a353-49d1-ab31-ca3f9f3d9a05" />
+
+---
+
 ## Overview
 
 System Logs Diagnostic is a native GNOME desktop application built in Rust that provides real-time system log monitoring, full-text search, severity-based diagnostics, and power cycle auditing on any Linux system using systemd's journal.
