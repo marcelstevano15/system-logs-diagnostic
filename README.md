@@ -170,10 +170,10 @@ sudo pacman -S --needed \
 
 ### Once the system dependencies are installed, install the Rust toolchain if it ins't already there:
 
-'''bash
+```bash
 curl --proto 'https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 source $HOME/.cargo/env
-'''
+```
 
 ---
 
