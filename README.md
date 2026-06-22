@@ -335,7 +335,7 @@ When the search field is empty, the Tantivy step is skipped and filters run dire
 
 | Sort Key | Field | Order |
 |---|---|---|
-| Time: Newest First | `timestamp` | Descending (default) |
+| Time: Newest First | `timestamp` | Descending |
 | Time: Oldest First | `timestamp` | Ascending |
 | Severity: High to Low | `severity` | Critical first |
 | Severity: Low to High | `severity` | Debug first |
