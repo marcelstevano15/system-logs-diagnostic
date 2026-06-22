@@ -12,7 +12,7 @@ Version 3.0.0 | License: GPL-3.0-or-later | Author: Marcel Stevano
 - [Features](#features)
 - [System Requirements](#system-requirements)
 - [Technology Stack](#technology-stack)
-- [Installation](#installation)
+- [Installation](#installation-guide)
 - [Configuration](#configuration)
 - [Usage](#usage)
 - [Log Sections](#log-sections)
